@@ -1,8 +1,8 @@
 {
-  "name": "radial-menu",
+  "name": "radialy",
   "productName": "Radialy",
-  "version": "1.0.0",
-  "description": "Радиальное меню с макросами для Windows",
+  "version": "1.1",
+  "description": "Radial menu with macros for Windows",
   "author": "Radialy",
   "license": "MIT",
   "private": true,

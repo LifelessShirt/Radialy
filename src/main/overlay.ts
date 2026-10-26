@@ -6,6 +6,7 @@ import type { Appearance, MenuItem, OverlayPayload } from '../shared/types';
 import type { Language } from '../shared/i18n';
 
 const PAD = 24; // должен совпадать с RING_PAD в renderer/ring.ts
+const BACKDROP_PAD = 112;
 
 export class Overlay {
   isOpen = false;
@@ -44,15 +45,14 @@ export class Overlay {
 
   open(items: MenuItem[], loopingItems: Set<string>, ap: Appearance, dark: boolean, accent: string, language: Language): void {
     if (this.isOpen) return;
-    const size = 2 * (ap.radius + PAD);
-    const m = size / 2;
+    const extent = ap.radius + PAD + BACKDROP_PAD;
     const pt = screen.getCursorScreenPoint();
     const display = screen.getDisplayNearestPoint(pt);
     const b = display.bounds;
 
     // Меню целиком помещается на экран: при необходимости сдвигаем курсор к центру меню
-    const cx = Math.min(Math.max(pt.x, b.x + m), b.x + b.width - m);
-    const cy = Math.min(Math.max(pt.y, b.y + m), b.y + b.height - m);
+    const cx = Math.min(Math.max(pt.x, b.x + extent), b.x + b.width - extent);
+    const cy = Math.min(Math.max(pt.y, b.y + extent), b.y + b.height - extent);
     if (cx !== pt.x || cy !== pt.y) {
       const p = screen.dipToScreenPoint({ x: cx, y: cy });
       setCursor(p.x, p.y);
@@ -62,7 +62,7 @@ export class Overlay {
     this.inner = ap.innerRadius;
     this.hover = null;
 
-    const bounds = { x: b.x, y: b.y, width: b.width, height: b.height };
+    const bounds = { x: cx - extent, y: cy - extent, width: extent * 2, height: extent * 2 };
     this.win.setBounds(bounds);
     this.win.setBounds(bounds); // второй вызов — обход бага с разным DPI мониторов
     const payload: OverlayPayload = {
@@ -73,7 +73,7 @@ export class Overlay {
       opacity: ap.opacity,
       dark,
       accent,
-      center: { x: cx - b.x, y: cy - b.y },
+      center: { x: extent, y: extent },
     };
     this.win.webContents.send('overlay:open', payload);
     this.win.showInactive();

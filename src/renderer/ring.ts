@@ -17,7 +17,6 @@ export interface RingStyle {
   opacity: number;
   dark: boolean;
   accent: string;
-  blurBackground?: boolean;
   language?: Language;
 }
 
@@ -81,7 +80,6 @@ export function renderRing(root: HTMLElement, items: RingItem[], st: RingStyle, 
   svg.setAttribute('height', String(size));
   svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
   const labels: HTMLElement[] = [];
-  const sectorBlurs: HTMLElement[] = [];
 
   items.forEach((it, i) => {
     const a = i * step;
@@ -91,12 +89,6 @@ export function renderRing(root: HTMLElement, items: RingItem[], st: RingStyle, 
     path.setAttribute('class', 'sector');
     path.dataset.i = String(i);
     if (onPick) path.addEventListener('click', () => onPick(i));
-    if (st.blurBackground) {
-      const blur = document.createElement('div');
-      blur.className = 'sector-blur';
-      blur.style.clipPath = `path("${path.getAttribute('d') ?? ''}")`;
-      sectorBlurs.push(blur);
-    }
     svg.append(path);
 
     const label = document.createElement('div');
@@ -131,7 +123,7 @@ export function renderRing(root: HTMLElement, items: RingItem[], st: RingStyle, 
   hub.setAttribute('class', 'hub');
   svg.append(hub);
 
-  root.replaceChildren(...sectorBlurs, svg, ...labels);
+  root.replaceChildren(svg, ...labels);
 }
 
 export function setActive(root: HTMLElement, i: number | null): void {

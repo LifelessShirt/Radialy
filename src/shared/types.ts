@@ -44,6 +44,7 @@ export interface Settings {
   enabled: boolean;
   /** Имя клавиши в терминах uiohook-napi, например 'F23' */
   trigger: string;
+  suppressTrigger: boolean;
   profiles: Profile[];
   appearance: Appearance;
   startup: { launchAtLogin: boolean; startHidden: boolean };

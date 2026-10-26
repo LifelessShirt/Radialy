@@ -1,9 +1,5 @@
 .ring { position: relative; }
 .ring > svg { position: absolute; inset: 0; display: block; }
-.ring .sector-blur {
-  position: absolute; inset: 0; pointer-events: none;
-  -webkit-backdrop-filter: blur(12px) brightness(.82); backdrop-filter: blur(12px) brightness(.82);
-}
 .ring .sector { fill: var(--sector); stroke: var(--stroke); stroke-width: 1.5; stroke-linejoin: round; transition: fill .08s ease; }
 .ring.pick .sector { cursor: pointer; }
 .ring .sector.active { fill: var(--accent); }

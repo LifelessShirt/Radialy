@@ -199,8 +199,7 @@ function createTray(): void {
 // ── применение настроек ──
 function applySettings(): void {
   nativeTheme.themeSource = settings.appearance.theme;
-  hook.setTrigger(settings.trigger);
-  hook.enabled = settings.enabled;
+  hook.configure(settings.trigger, settings.enabled, settings.suppressTrigger);
   if (!settings.enabled) stopAllLoops();
   if (app.isPackaged) app.setLoginItemSettings({ openAtLogin: settings.startup.launchAtLogin, args: ['--autostart'] });
   updateTray();

@@ -47,6 +47,7 @@ export function defaultSettings(): Settings {
     language: detectLanguage(app.getLocale()),
     enabled: true,
     trigger: 'F23',
+    suppressTrigger: true,
     profiles: [{ id: uid(), exe: null, items: defaultItems() }],
     appearance: { theme: 'system', accent: 'system', radius: 170, innerRadius: 48, opacity: 0.92, returnCursor: false },
     startup: { launchAtLogin: false, startHidden: true },
@@ -121,6 +122,7 @@ export function normalize(raw: any): Settings {
     language: (['ru', 'en', 'uk'] as Language[]).includes(raw.language) ? raw.language : detectLanguage(app.getLocale()),
     enabled: raw.enabled !== false,
     trigger: typeof raw.trigger === 'string' && raw.trigger ? raw.trigger : d.trigger,
+    suppressTrigger: raw.suppressTrigger !== false,
     profiles,
     appearance: {
       theme: ['system', 'light', 'dark'].includes(a.theme) ? a.theme : 'system',
