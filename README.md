@@ -1,5 +1,4 @@
-# Radialy
-
+![Radialy](assets/wide_logo.png)
 [Download the latest stable version](https://github.com/LifelessShirt/Radialy/releases/tag/stable)
 
 Radialy is a customizable radial menu for Windows that puts your favorite actions right under your cursor. Assign it to any keyboard key: hold the key to open the menu, point to an option, and release to run it.
