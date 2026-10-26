@@ -1,0 +1,75 @@
+{
+  "name": "radial-menu",
+  "productName": "Radialy",
+  "version": "1.0.0",
+  "description": "Радиальное меню с макросами для Windows",
+  "author": "Radialy",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main/main.js",
+  "scripts": {
+    "build:main": "esbuild src/main/main.ts --bundle --platform=node --format=cjs --target=node20 --external:electron --external:koffi --external:uiohook-napi --outfile=dist/main/main.js",
+    "build:preload": "esbuild src/preload/preload.ts src/preload/overlay-preload.ts --bundle --platform=node --format=cjs --target=node20 --external:electron --outdir=dist/preload",
+    "build:renderer": "esbuild src/renderer/settings/settings.ts src/renderer/overlay/overlay.ts --bundle --format=iife --target=chrome120 --outdir=dist/renderer --outbase=src/renderer",
+    "build": "npm run build:main && npm run build:preload && npm run build:renderer && node scripts/copy-static.js",
+    "typecheck": "tsc -p tsconfig.main.json && tsc -p tsconfig.renderer.json",
+    "start": "npm run build && node scripts/start.js",
+    "dist": "npm run build && electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "koffi": "^2.9.0",
+    "uiohook-napi": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "esbuild": "^0.24.0",
+    "lucide": "^1.61.0",
+    "typescript": "^5.6.3"
+  },
+  "build": {
+    "appId": "com.virbound.radialy",
+    "npmRebuild": false,
+    "productName": "Radialy",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json",
+      "!node_modules/koffi/build/koffi/!(win32_x64)/**"
+    ],
+    "asarUnpack": [
+      "**/node_modules/uiohook-napi/**/*",
+      "**/node_modules/koffi/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Radialy",
+      "uninstallDisplayName": "Radialy",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "language": "1049",
+      "runAfterFinish": true
+    }
+  }
+}
